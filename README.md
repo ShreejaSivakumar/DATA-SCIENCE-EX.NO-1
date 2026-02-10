@@ -1,6 +1,15 @@
 #EX.NO:1
 Data Cleaning Process
 
+
+***
+
+NAME   :  SHREEJA R S
+REF.NO :  25017561
+
+***
+
+
 # AIM
 To read the given data and perform data cleaning and save the cleaned data to a file.
 
