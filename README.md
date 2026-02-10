@@ -116,14 +116,88 @@ sns.boxplot(x=ir['num_episodes'])
 plt.show()
 
 ```
+```
+# Calculate IQR
+Q1 = ir['num_episodes'].quantile(0.25)
+Q3 = ir['num_episodes'].quantile(0.75)
+IQR = Q3 - Q1
+print("IQR:", IQR)
+```
+
 <img width="1920" height="718" alt="Screenshot 2026-02-10 112808" src="https://github.com/user-attachments/assets/ce6eea01-1562-4f70-90fe-4462f44e5096" />
 
 <img width="1914" height="655" alt="Screenshot 2026-02-10 112823" src="https://github.com/user-attachments/assets/ea8f1b16-1099-43b1-9f95-a0c456eff115" />
 
 
+<img width="1910" height="1028" alt="Screenshot 2026-02-10 112834" src="https://github.com/user-attachments/assets/bada8063-8459-42e9-8e93-a81cf5262459" />
+
+```
+# Detect Outliers
+outliers_iqr = ir[
+    (ir['num_episodes'] < (Q1 - 1.5 * IQR)) |
+    (ir['num_episodes'] > (Q3 + 1.5 * IQR))
+]
+outliers_iqr
+```
+<img width="1914" height="927" alt="Screenshot 2026-02-10 112847" src="https://github.com/user-attachments/assets/ffb54ec2-d739-4a51-9c56-9210cc914a52" />
+
+```
+# Remove Outliers
+ir_cleaned = ir[
+    ~((ir['num_episodes'] < (Q1 - 1.5 * IQR)) |
+      (ir['num_episodes'] > (Q3 + 1.5 * IQR)))
+]
+ir_cleaned
+
+```
+<img width="1920" height="902" alt="Screenshot 2026-02-10 112855" src="https://github.com/user-attachments/assets/c7611459-9ebf-4718-86e5-c7abcf98be15" />
+
+```
+# Step 7: Z-Score Method
+
+data = [1,12,15,18,21,24,27,30,33,36,39,42,45,48,51,
+        54,57,60,63,66,69,72,75,78,81,84,87,90,93]
+
+df_z = pd.DataFrame(data, columns=['values'])
+df_z
+
+```
+```
+# Calculate Z-Scores
+z_scores = np.abs(stats.zscore(df_z))
+z_scores
+
+```
+<img width="1916" height="1018" alt="Screenshot 2026-02-10 112906" src="https://github.com/user-attachments/assets/65b33e87-ae99-4a0e-9102-4b2cfdd5e352" />
+
+<img width="1920" height="1022" alt="Screenshot 2026-02-10 112918" src="https://github.com/user-attachments/assets/a32764f8-9644-44f7-9b99-a14f6324cf7d" />
+
+<img width="1920" height="960" alt="Screenshot 2026-02-10 112929" src="https://github.com/user-attachments/assets/bb53af3d-186e-42ab-81d4-aa9a06e05e16" />
+
+```
+# Detect Outliers
+threshold = 3
+outliers_z = df_z[z_scores > threshold]
+print("Outliers:")
+outliers_z
+```
+
+```
+# Remove Outliers
+df_z_cleaned = df_z[z_scores <= threshold]
+df_z_cleaned
+
+```
+<img width="1915" height="1012" alt="Screenshot 2026-02-10 112938" src="https://github.com/user-attachments/assets/82707019-9a0c-4d38-a485-d114e435691b" />
+
+<img width="1920" height="1009" alt="Screenshot 2026-02-10 112948" src="https://github.com/user-attachments/assets/1baa3bae-fc78-4db5-9f55-a0413c185abb" />
 
 
 
-         <<include your coding and its corressponding output screen shots here>>
+
+           <<include your coding and its corressponding output screen shots here>>
 # Result
+
+Thus we have cleaned the data and removed the outliers by detection using IQR and Z-score method.
+          
           <<include your Result here>>
